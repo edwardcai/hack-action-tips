@@ -3,6 +3,7 @@ import './App.css';
 import {useDispatch, useSelector} from "react-redux";
 import {State} from "./index";
 import TranslatedText, {Translation} from "./TranslatedText";
+import {Sentence} from "./App";
 
 const illoMap: Record<string, string> = {
   "fukurō": "https://design.duolingo.com/images/guides/identity-imagery-illustration-duo-wave.svg",
@@ -24,11 +25,15 @@ export default () => {
   return <div className={"w-full"}>
     <div className={"flex flex-row items-center justify-around w-full"}>
       <Dropdown options={leftOptions} desuPart={"Left"} text={desuState.left ?? "?"}/>
-      <div> =</div>
+      <div>=</div>
       <Dropdown options={rightOptions} desuPart={"Right"} text={desuState.right ?? "?"}/>
     </div>
     <div className="mt-3 text-center">
-      { desuSentence }
+      <Sentence sentence={{
+        verb: "desu",
+        topic: desuState.left,
+        noun: desuState.right,
+      }}/>
     </div>
   </div>
 }
