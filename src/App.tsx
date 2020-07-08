@@ -11,20 +11,28 @@ function App() {
       >
         <div className={"w-full"}>
           Let's learn to build our first sentence in Japanese!
-          Unlike in English, every clause in Japanese <i>ends</i> with the verb.
+          Like English, every sentence contains a main verb, but unlike English, every clause in Japanese <i>ends</i> with the main verb.
         </div>
         <div className="text-xl w-full flex flex-row justify-around">
           <div className="text-orange-600"> everything else</div>
           <div className="text-green-600"> verb</div>
         </div>
         <div className={"w-full"}>
-          The first verb we'll learn is "desu". This is similar to "is" in English, and can be used link one thing
-          to another.
+          For our first sentence, the first verb we'll learn is "desu". This is similar to "is" in English, and can be used link one thing
+          to a description. For example, "Duo is an owl".
         </div>
+        <div className={"w-full"}>
+          To use this verb, we'll need the topic ("Duo"), and something to describe that topic ("owl"). In Japanese,
+          we can make something a topic by adding "wa" to the end.
+        </div>
+        <Sentence sentence={{
+          verb: "desu",
+          topic: "...",
+          noun: "...",
+        }}/>
 
         <div className={"w-full"}>
-          To use it, we'll first need a <span className="text-orange-600">topic</span> and something else to equate
-          the topic to.
+          Try creating a sentence using "desu"!
         </div>
         <DesuEquate/>
       </div>
