@@ -3,11 +3,50 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {createStore} from 'redux';
+import produce from "immer";
+import {Provider} from "react-redux";
+
+export interface State {
+  desuState: {
+    left?: string,
+    right?: string
+  }
+}
+
+export type Action = {
+  selection: string;
+  type: "desuSelectLeft";
+} | {
+  selection: string;
+  type: "desuSelectRight";
+}
+
+const reducer = (
+  state: State = {
+    desuState: {}
+  },
+  action: Action
+): State => produce(state, (draft: State) => {
+  switch (action.type) {
+    case "desuSelectLeft":
+      draft.desuState.left = action.selection;
+      break;
+    case "desuSelectRight":
+      draft.desuState.right = action.selection;
+      break;
+  }
+  return draft;
+});
+
+const store = createStore(reducer,
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
