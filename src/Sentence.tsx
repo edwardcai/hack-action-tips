@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {SentenceInfo} from "./App";
 import TranslatedText, {Translation} from "./TranslatedText";
@@ -55,11 +55,6 @@ export const Sentence = (
     makePart(part, index, sentence[part])
   );
 
-  const getListStyle = {
-    display: 'flex',
-    overflow: 'auto',
-  };
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -77,8 +72,25 @@ export const Sentence = (
     })
   };
 
+  const getError = (): string | undefined => {
+    if (sentence.requiredParts[sentence.requiredParts.length - 1] !== 'verb') {
+      return "Clauses in Japanese must end with the main verb!"
+    }
+  };
 
-  return <div className="text-xl w-full flex flex-row justify-center space-x-2">
+  const error = getError();
+
+  const errorSentence = error && <div className="text-red-600 text-sm mt-6 flex flex-row items-center">
+    <span>
+      <img className="w-10 mr-6" src="./redCircle.svg"/>
+    </span>
+      <span>
+    {error}
+    </span>
+  </div>;
+
+
+  return <div className="text-xl">
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable" direction="horizontal">
         {provided => (
@@ -87,6 +99,7 @@ export const Sentence = (
           </div>
         )}
       </Droppable>
+      {errorSentence}
     </DragDropContext>
     {/*。*/}
   </div>
@@ -105,6 +118,9 @@ const Dropdown = ({
 }) => {
   const dispatch = useDispatch();
   const [isShowing, setIsShowing] = useState(false);
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => setIsShowing(false));
+
   const optionsElement = options.map(option => <div
     className="text-base bg-white hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 p-2"
     onClick={(event => {
@@ -123,8 +139,9 @@ const Dropdown = ({
     />
   </div>);
 
-  return <div>
-    <div className={options.length > 0 ? "hover:bg-yellow-300 cursor-pointer" : ""}
+  return <div ref={wrapperRef}>
+    <div
+      className={options.length > 0 ? "hover:bg-yellow-300 cursor-pointer" : ""}
       onClick={() => setIsShowing(true)}
     > {text} </div>
     {isShowing && <div className="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg">
@@ -133,3 +150,29 @@ const Dropdown = ({
     }
   </div>
 };
+
+/**
+ * Hook that alerts clicks outside of the passed ref
+ */
+// @ts-ignore
+function useOutsideAlerter(ref, onClick: () => void) {
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        // @ts-ignore
+        function handleClickOutside(event) {
+          if (ref.current && !ref.current.contains(event.target)) {
+            onClick()
+          }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [ref]);
+}
+
