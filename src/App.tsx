@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import TranslatedText from "./TranslatedText";
 import DesuEquate from "./DesuEquate";
+import {Sentence} from "./Sentence";
 
 function App() {
   return (
@@ -18,12 +19,12 @@ function App() {
           <div className="text-green-600"> verb</div>
         </div>
         <div className={"w-full"}>
-          For our first sentence, the first verb we'll learn is "desu". This is similar to "is" in English, and can be used link one thing
+          For our first sentence, the first verb we'll learn is "desu". This is similar to "is" in English, and can be used link a noun
           to a description. For example, "Duo is an owl".
         </div>
         <div className={"w-full"}>
-          To use this verb, we'll need the topic ("Duo"), and something to describe that topic ("owl"). In Japanese,
-          we can make something a topic by adding "wa" to the end.
+          To use this verb, we'll need a topic ("Duo"), and something to describe that topic ("owl"). In Japanese,
+          we can mark a noun as the topic by adding "wa" to the end of the noun.
         </div>
         <Sentence sentence={{
           verb: "desu",
@@ -42,40 +43,7 @@ function App() {
 
 
 
-export const Sentence = ({sentence}: {sentence: SentenceInfo}) => {
-  const makePart = (text?: string, pos?: string) => {
-    if (!text) {
-      return null;
-    }
-    const colorToClass: Record<string, string> = {
-      verb: "text-green-600",
-      topic: "text-orange-600",
-    };
-
-    const posParticle: Record<string, string> = {
-      topic: "wa"
-    };
-
-    return <div className="flex flex-col items-center">
-      <div> {text + (posParticle[pos ?? ""] ? " " + posParticle[pos ?? ""] : "")} </div>
-      <div className={"text-xs " + colorToClass[pos ?? ""] ?? ""}> {pos} </div>
-    </div>
-  };
-
-  const parts = [
-    makePart(sentence.topic, "topic"),
-    makePart(sentence.noun, undefined),
-    makePart(sentence.verb, "verb"),
-  ];
-
-
-  return <div className="text-xl w-full flex flex-row justify-center space-x-2">
-    {parts}
-    。
-  </div>
-};
-
-interface SentenceInfo {
+export interface SentenceInfo {
   verb: string
   topic?: string
   noun?: string

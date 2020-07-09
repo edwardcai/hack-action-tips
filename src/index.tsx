@@ -1,39 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App, {SentenceInfo} from './App';
 import * as serviceWorker from './serviceWorker';
 import {createStore} from 'redux';
 import produce from "immer";
 import {Provider} from "react-redux";
 
 export interface State {
-  desuState: {
-    left?: string,
-    right?: string
-  }
+  sentenceMap: Record<string, SentenceInfo>
 }
 
 export type Action = {
   selection: string;
-  type: "desuSelectLeft";
+  sentenceId: string;
+  type: "setTopic";
 } | {
   selection: string;
-  type: "desuSelectRight";
+  sentenceId: string;
+  type: "setNoun";
 }
 
 const reducer = (
-  state: State = {
-    desuState: {}
-  },
+  state: State = {sentenceMap: {
+    "desu": { verb: "desu"}
+    }},
   action: Action
 ): State => produce(state, (draft: State) => {
+  const sentence = draft.sentenceMap[action.sentenceId];
+  if (!sentence) {
+    return draft;
+  }
   switch (action.type) {
-    case "desuSelectLeft":
-      draft.desuState.left = action.selection;
+    case "setTopic":
+      sentence.topic = action.selection;
       break;
-    case "desuSelectRight":
-      draft.desuState.right = action.selection;
+    case "setNoun":
+      sentence.noun = action.selection;
       break;
   }
   return draft;
