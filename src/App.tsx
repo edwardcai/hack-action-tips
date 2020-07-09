@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import TranslatedText from "./TranslatedText";
+import TranslatedText, {Translation} from "./TranslatedText";
 import DesuEquate from "./DesuEquate";
 import {Sentence} from "./Sentence";
 
 function App() {
   return (
-    <div className="w-screen flex flex-col items-center mt-20">
+    <div className="w-screen flex flex-col items-center mt-20 mb-64">
       <div
         className="flex w-6/12 flex-col content-center items-center space-y-6"
       >
@@ -26,19 +26,42 @@ function App() {
           to a description. For example, "Duo is an owl".
         </div>
         <div className={"w-full"}>
-          To use this verb, we'll need a topic ("Duo"), and something to describe that topic ("owl"). In Japanese,
-          we can mark a noun as the topic by adding "wa" to the end of the noun.
+          To use this verb, we'll usually need a topic ("Duo"), and something to describe that topic ("owl"). In Japanese,
+          we can mark a noun as the topic by adding "wa" after the noun.
         </div>
-        <Sentence sentence={{
-          verb: "desu",
-          topic: "...",
-          noun: "...",
-        }}/>
+        <Sentence sentenceId={"desuExample"}/>
 
         <div className={"w-full"}>
           Try creating a sentence using "desu"!
         </div>
         <DesuEquate/>
+
+        <div className={"w-full text-xl font-bold mt-12"}>
+          More Verbs
+        </div>
+        <div className={"w-full"}>
+          Now let's learn some verbs associated with actions! Like "desu", these verbs usually require a topic (what is performing the action).
+          In addition, we can include an <span className="text-blue-600">object</span> (what the action is being performed on).
+          <br/><br/>
+          We can mark a noun as the object by adding "wo" after the noun.
+        </div>
+        <Sentence
+          sentenceId={"eatdrink"}
+          sentenceOptions={{
+            object: [
+              {text: "gohan", translation: "rice"},
+              {text: "ocha", translation: "tea"},
+            ],
+            topic: [
+              {text: "fukurō", translation: "owl"},
+              {text: "neko", translation: "cat"},
+            ],
+            verb: [
+              {text: "tabemasu", translation: "eat"},
+              {text: "nomimasu", translation: "drink"},
+            ]
+          }}
+        />
       </div>
     </div>
   );
@@ -47,10 +70,12 @@ function App() {
 
 
 export interface SentenceInfo {
-  verb: string
+  id: string
+  verb?: string
   topic?: string
   noun?: string
   object?: string
+  requiredParts: string[]
 }
 
 const OwlPicture = ({

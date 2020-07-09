@@ -17,7 +17,8 @@ export default () => {
   const rightText = desuState.noun ?? "?";
 
   return <div className={"w-full"}>
-    <div className={"flex flex-row items-center justify-around w-full border-solid border-2 pt-12 pb-12 h64 rounded-lg"}>
+    <div
+      className={"flex flex-row items-center justify-around w-full border-solid border-2 pt-12 pb-12 h64 rounded-lg"}>
       <div>
         {illoMap[leftText]
           ? <img className="w-12" src={illoMap[leftText]}/>
@@ -25,7 +26,7 @@ export default () => {
         }
       </div>
       <div>=</div>
-            <div>
+      <div>
         {illoMap[rightText]
           ? <img className="w-12" src={illoMap[rightText]}/>
           : rightText
@@ -33,11 +34,19 @@ export default () => {
       </div>
     </div>
     <div className="mt-3 text-center">
-      <Sentence sentence={{
-        verb: "desu",
-        topic: desuState.topic,
-        noun: desuState.noun,
-      }}/>
+      <Sentence
+        sentenceId={"desu"}
+        sentenceOptions={{
+          noun: [
+            {text: "fukurō", translation: "owl"},
+            {text: "neko", translation: "cat"},
+          ],
+          topic: [
+            {text: "Duo", translation: "Duo"},
+            {text: "Misu", translation: "Misu"},
+          ]
+        }}
+      />
     </div>
   </div>
 }

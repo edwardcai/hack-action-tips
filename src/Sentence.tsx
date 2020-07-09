@@ -2,33 +2,28 @@ import React, {useState} from 'react';
 import './App.css';
 import {SentenceInfo} from "./App";
 import TranslatedText, {Translation} from "./TranslatedText";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {State} from "./index";
 
-export const Sentence = ({sentence}: { sentence: SentenceInfo }) => {
+export const Sentence = (
+  {sentenceId, sentenceOptions}: { sentenceId: string, sentenceOptions?: Record<string, Translation[]> }) => {
+  const sentence = useSelector((state: State) => state.sentenceMap[sentenceId]);
+
   const makePart = (pos: string, text?: string,) => {
     const colorToClass: Record<string, string> = {
       verb: "text-green-600",
       topic: "text-orange-600",
+      object: "text-blue-600",
     };
 
     const posParticle: Record<string, string> = {
-      topic: "wa"
-    };
-
-    const optionsMap: Record<string, Translation[]> = {
-      noun: [
-        {text: "fukurō", translation: "owl"},
-        {text: "neko", translation: "cat"},
-      ],
-      topic: [
-        {text: "Duo", translation: "Duo"},
-        {text: "Misu", translation: "Misu"},
-      ]
+      topic: "wa",
+      object: "o",
     };
 
     const editable = <Dropdown
-      options={optionsMap[pos] ?? []}
-      sentenceId={sentence.verb}
+      options={sentenceOptions?.[pos] ?? []}
+      sentenceId={sentenceId}
       sentencePart={pos}
       text={(text ?? "...") + (posParticle[pos ?? ""] ? (" " + posParticle[pos ?? ""]) : "")}
     />;
@@ -42,11 +37,10 @@ export const Sentence = ({sentence}: { sentence: SentenceInfo }) => {
     </div>
   };
 
-  const parts = [
-    makePart("topic", sentence.topic),
-    makePart("noun", sentence.noun),
-    makePart("verb", sentence.verb),
-  ];
+  const parts = sentence.requiredParts.map(part =>
+    // @ts-ignore
+    makePart(part, sentence[part])
+  );
 
 
   return <div className="text-xl w-full flex flex-row justify-center space-x-2">

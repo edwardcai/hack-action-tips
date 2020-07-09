@@ -19,11 +19,21 @@ export type Action = {
   selection: string;
   sentenceId: string;
   type: "setNoun";
+} | {
+  selection: string;
+  sentenceId: string;
+  type: "setVerb";
+} | {
+  selection: string;
+  sentenceId: string;
+  type: "setObject";
 }
 
 const reducer = (
   state: State = {sentenceMap: {
-    "desu": { verb: "desu"}
+    "desuExample": { verb: "desu", id: "desuExample", requiredParts: ["topic", "noun", "verb"]},
+    "desu": { verb: "desu", id: "desu", requiredParts: ["topic", "noun", "verb"]},
+    "eatdrink": { id: "eatdrink", requiredParts: ["topic", "object", "verb"]},
     }},
   action: Action
 ): State => produce(state, (draft: State) => {
@@ -37,6 +47,12 @@ const reducer = (
       break;
     case "setNoun":
       sentence.noun = action.selection;
+      break;
+    case "setObject":
+      sentence.object = action.selection;
+      break;
+    case "setVerb":
+      sentence.verb = action.selection;
       break;
   }
   return draft;
