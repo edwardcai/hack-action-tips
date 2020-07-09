@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
-import TranslatedText, {Translation} from "./TranslatedText";
+import TranslatedText from "./TranslatedText";
 import DesuEquate from "./DesuEquate";
 import {Sentence} from "./Sentence";
+import EatDrinkPic from "./EatDrinkPic";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <br/><br/>
           We can mark a noun as the object by adding "wo" after the noun.
         </div>
+        <EatDrinkPic/>
         <Sentence
           sentenceId={"eatdrink"}
           sentenceOptions={{
@@ -66,8 +68,6 @@ function App() {
     </div>
   );
 }
-
-
 
 export interface SentenceInfo {
   id: string
