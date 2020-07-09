@@ -27,13 +27,19 @@ export type Action = {
   selection: string;
   sentenceId: string;
   type: "setObject";
+} | {
+  startIndex: number;
+  endIndex: number;
+  sentenceId: string;
+  type: "reorderParts";
 }
 
 const reducer = (
   state: State = {sentenceMap: {
     "desuExample": { verb: "desu", id: "desuExample", requiredParts: ["topic", "noun", "verb"]},
     "desu": { verb: "desu", id: "desu", requiredParts: ["topic", "noun", "verb"]},
-    "eatdrink": { id: "eatdrink", requiredParts: ["topic", "object", "verb"]},
+    "eatDrink": { id: "eatDrink", requiredParts: ["topic", "object", "verb"]},
+    "eatDrinkReorder": { id: "eatDrinkReorder", verb: "tabemasu", object: "gohan", topic: "neko", requiredParts: ["topic", "object", "verb"]},
     }},
   action: Action
 ): State => produce(state, (draft: State) => {
@@ -53,6 +59,11 @@ const reducer = (
       break;
     case "setVerb":
       sentence.verb = action.selection;
+      break;
+    case "reorderParts":
+      const part = sentence.requiredParts[action.startIndex];
+      sentence.requiredParts[action.startIndex] = sentence.requiredParts[action.endIndex];
+      sentence.requiredParts[action.endIndex] = part;
       break;
   }
   return draft;

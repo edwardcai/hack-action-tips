@@ -4,12 +4,16 @@ import {SentenceInfo} from "./App";
 import TranslatedText, {Translation} from "./TranslatedText";
 import {useDispatch, useSelector} from "react-redux";
 import {State} from "./index";
+import {DragDropContext, Droppable, Draggable, DropResult} from 'react-beautiful-dnd';
+
 
 export const Sentence = (
   {sentenceId, sentenceOptions}: { sentenceId: string, sentenceOptions?: Record<string, Translation[]> }) => {
   const sentence = useSelector((state: State) => state.sentenceMap[sentenceId]);
 
-  const makePart = (pos: string, text?: string,) => {
+  const dispatch = useDispatch();
+
+  const makePart = (pos: string, index: number, text?: string) => {
     const colorToClass: Record<string, string> = {
       verb: "text-green-600",
       topic: "text-orange-600",
@@ -31,21 +35,60 @@ export const Sentence = (
     const posLabel = colorToClass[pos ?? ""] &&
         <div className={"text-xs " + colorToClass[pos ?? ""] ?? ""}> {pos} </div>;
 
-    return <div className="flex flex-col items-center">
-      {editable}
-      {posLabel}
-    </div>
+    return <Draggable key={pos} draggableId={pos} index={index}>
+      {provided => (
+        <div
+          className="flex flex-col items-center"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          {editable}
+          {posLabel}
+        </div>
+      )}
+    </Draggable>
   };
 
-  const parts = sentence.requiredParts.map(part =>
+  const parts = sentence.requiredParts.map((part, index) =>
     // @ts-ignore
-    makePart(part, sentence[part])
+    makePart(part, index, sentence[part])
   );
+
+  const getListStyle = {
+    display: 'flex',
+    overflow: 'auto',
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    dispatch({
+      startIndex: result.source.index,
+      endIndex: result.destination.index,
+      sentenceId: sentenceId,
+      type: "reorderParts"
+    })
+  };
 
 
   return <div className="text-xl w-full flex flex-row justify-center space-x-2">
-    {parts}
-    。
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable" direction="horizontal">
+        {provided => (
+          <div ref={provided.innerRef} className={"flex flex-row justify-center space-x-2"} {...provided.droppableProps}>
+          {parts}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+    {/*。*/}
   </div>
 };
 

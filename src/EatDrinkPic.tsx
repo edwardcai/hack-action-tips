@@ -20,9 +20,9 @@ const illoMap: Record<string, string> = {
   "nomimasugohan": "/riceDrink.svg",
 };
 
-export default () => {
+export default ({sentenceId}: {sentenceId: string}) => {
   const sentence = useSelector((state: State) =>
-    state.sentenceMap["eatdrink"]
+    state.sentenceMap[sentenceId]
   );
 
   const topicPath = sentence.topic && illoMap[(sentence.topic ?? "") + (sentence.verb ?? "")];
