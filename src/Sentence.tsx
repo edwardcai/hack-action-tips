@@ -87,7 +87,7 @@ const Dropdown = ({
   </div>);
 
   return <div>
-    <div
+    <div className={options.length > 0 ? "hover:bg-yellow-300 cursor-pointer" : ""}
       onClick={() => setIsShowing(true)}
     > {text} </div>
     {isShowing && <div className="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg">

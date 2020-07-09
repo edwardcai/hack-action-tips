@@ -10,6 +10,9 @@ function App() {
       <div
         className="flex w-6/12 flex-col content-center items-center space-y-6"
       >
+        <div className={"w-full text-xl font-bold"}>
+          Desu
+        </div>
         <div className={"w-full"}>
           Let's learn to build our first sentence in Japanese!
           Like English, every sentence contains a main verb, but unlike English, every clause in Japanese <i>ends</i> with the main verb.

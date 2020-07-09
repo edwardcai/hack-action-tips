@@ -13,18 +13,11 @@ const illoMap: Record<string, string> = {
 export default () => {
   const desuState = useSelector((state: State) => state.sentenceMap["desu"] ?? {});
 
-  const leftOptions = [{ text: "Duo", translation: "Duo"}];
-
-  const rightOptions = [
-    { text: "fukurō", translation: "owl"},
-    { text: "neko", translation: "cat"},
-  ];
-
   const leftText = desuState.topic ?? "?";
   const rightText = desuState.noun ?? "?";
 
   return <div className={"w-full"}>
-    <div className={"flex flex-row items-center justify-around w-full"}>
+    <div className={"flex flex-row items-center justify-around w-full border-solid border-2 pt-12 pb-12 h64 rounded-lg"}>
       <div>
         {illoMap[leftText]
           ? <img className="w-12" src={illoMap[leftText]}/>
