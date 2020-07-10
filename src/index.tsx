@@ -40,6 +40,7 @@ const reducer = (
     "desu": { verb: "desu", id: "desu", requiredParts: ["topic", "noun", "verb"]},
     "eatDrink": { id: "eatDrink", requiredParts: ["topic", "object", "verb"]},
     "eatDrinkReorder": { id: "eatDrinkReorder", verb: "tabemasu", object: "gohan", topic: "neko", requiredParts: ["topic", "object", "verb"]},
+    "desuFormality": { verb: "desu", id: "desuFormality", topic: "watashi", noun: "Duo", requiredParts: ["topic", "noun", "verb"]},
     }},
   action: Action
 ): State => produce(state, (draft: State) => {

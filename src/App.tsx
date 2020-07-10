@@ -4,6 +4,7 @@ import TranslatedText from "./TranslatedText";
 import DesuEquate from "./DesuEquate";
 import {Sentence} from "./Sentence";
 import EatDrinkPic from "./EatDrinkPic";
+import DesuFormalityPic from "./DesuFormalityPic";
 
 function App() {
   return (
@@ -95,6 +96,25 @@ function App() {
             verb: [
               {text: "tabemasu", translation: "eat"},
               {text: "nomimasu", translation: "drink"},
+            ]
+          }}
+        />
+
+        <div className={"w-full text-xl font-bold"}>
+          Formality
+        </div>
+        <div className={"w-full"}>
+          Japanese language changes greatly based on the level of formality that is being expressed. This can be based on age, social status, and many other factors.
+          <br/><br/>
+          These levels in formality can be expressed based on the verb. Try changing "desu" into a less formal version!
+        </div>
+        <DesuFormalityPic sentenceId={"desuFormality"}/>
+        <Sentence
+          sentenceId={"desuFormality"}
+          sentenceOptions={{
+            verb: [
+              {text: "desu", translation: "is"},
+              {text: "da", translation: "is"},
             ]
           }}
         />
