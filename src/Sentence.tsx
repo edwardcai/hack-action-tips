@@ -18,11 +18,13 @@ export const Sentence = (
       verb: "text-green-600",
       topic: "text-orange-600",
       object: "text-blue-600",
+      location: "text-red-600"
     };
 
     const posParticle: Record<string, string> = {
       topic: "wa",
       object: "o",
+      location: "de",
     };
 
     const editable = <Dropdown
@@ -50,9 +52,11 @@ export const Sentence = (
     </Draggable>
   };
 
-  const parts = sentence.requiredParts.map((part, index) =>
-    // @ts-ignore
-    makePart(part, index, sentence[part])
+  const parts = sentence.requiredParts.map((part, index) => {
+      console.log(part);
+      // @ts-ignore
+      return makePart(part, index, sentence[part])
+    }
   );
 
   const onDragEnd = (result: DropResult) => {
@@ -132,6 +136,8 @@ const TranslationDisplay = ({
       "nomimasu": "drinks ",
       "gohan": "rice ",
       "watashi": "I ",
+      "Ejiputo": "in Egypt",
+      "Furansu": "in France",
     };
 
     if (text === "desu" || text === "da") {
@@ -145,7 +151,7 @@ const TranslationDisplay = ({
 
   console.log (sentence.topic);
 
-  const parts = ["topic", "verb", "object", "noun"].map(pos => {
+  const parts = ["topic", "verb", "object", "noun", "location"].map(pos => {
     // @ts-ignore
     const part = sentence[pos];
     const partTranslation = part ? getTranslation(part, sentence) : "";
@@ -174,6 +180,7 @@ const Dropdown = ({
   sentencePart: string;
   text: string;
 }) => {
+  console.log(options);
   const dispatch = useDispatch();
   const [isShowing, setIsShowing] = useState(false);
   const wrapperRef = useRef(null);

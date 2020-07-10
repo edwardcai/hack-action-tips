@@ -5,6 +5,7 @@ import DesuEquate from "./DesuEquate";
 import {Sentence} from "./Sentence";
 import EatDrinkPic from "./EatDrinkPic";
 import DesuFormalityPic from "./DesuFormalityPic";
+import Particles from "./Particles";
 
 function App() {
   return (
@@ -40,6 +41,25 @@ function App() {
           Try creating a sentence using "desu" by clicking on the blanks in the sentence below!
         </div>
         <DesuEquate/>
+
+        <div className={"w-full text-xl font-bold"}>
+          Formality
+        </div>
+        <div className={"w-full"}>
+          Japanese language changes greatly based on the level of formality that is being expressed. This can be based on age, social status, and many other factors.
+          <br/><br/>
+          These levels in formality can be expressed based on the verb. Try changing "desu" into a less formal version!
+        </div>
+        <DesuFormalityPic sentenceId={"desuFormality"}/>
+        <Sentence
+          sentenceId={"desuFormality"}
+          sentenceOptions={{
+            verb: [
+              {text: "desu", translation: "is"},
+              {text: "da", translation: "is"},
+            ]
+          }}
+        />
 
         <div className={"w-full text-xl font-bold mt-12"}>
           More Verbs
@@ -96,27 +116,44 @@ function App() {
             verb: [
               {text: "tabemasu", translation: "eat"},
               {text: "nomimasu", translation: "drink"},
-            ]
+            ],
           }}
         />
 
         <div className={"w-full text-xl font-bold"}>
-          Formality
+          More Particles!
         </div>
         <div className={"w-full"}>
-          Japanese language changes greatly based on the level of formality that is being expressed. This can be based on age, social status, and many other factors.
+          Previously, we learned that "wa" marks the topic of a sentence and that "o" marks the object of a sentence.
+          These are examples of <b>particles</b>; and we can use other particles to add information to a sentence such
+          as time, location, and more!
           <br/><br/>
-          These levels in formality can be expressed based on the verb. Try changing "desu" into a less formal version!
+          Try adding more details to the sentence with more particles!
         </div>
-        <DesuFormalityPic sentenceId={"desuFormality"}/>
+        <EatDrinkPic sentenceId={"moreParticles"}/>
         <Sentence
-          sentenceId={"desuFormality"}
+          sentenceId={"moreParticles"}
           sentenceOptions={{
+            object: [
+              {text: "gohan", translation: "rice"},
+              {text: "ocha", translation: "tea"},
+            ],
+            topic: [
+              {text: "fukurō", translation: "owl"},
+              {text: "neko", translation: "cat"},
+            ],
             verb: [
-              {text: "desu", translation: "is"},
-              {text: "da", translation: "is"},
+              {text: "tabemasu", translation: "eat"},
+              {text: "nomimasu", translation: "drink"},
+            ],
+            location: [
+              {text: "Furansu", translation: "France"},
+              {text: "Ejiputo", translation: "Egypt"},
             ]
           }}
+        />
+        <Particles
+          sentenceId={"moreParticles"}
         />
       </div>
     </div>
@@ -129,7 +166,9 @@ export interface SentenceInfo {
   topic?: string
   noun?: string
   object?: string
-  requiredParts: string[]
+  location?: string
+  requiredParts: string[],
+  supportedParts: string[],
   hoveredPart?: string
 }
 

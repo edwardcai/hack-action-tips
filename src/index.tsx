@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {createStore} from 'redux';
 import produce from "immer";
 import {Provider} from "react-redux";
+import {act} from "react-dom/test-utils";
 
 export interface State {
   sentenceMap: Record<string, SentenceInfo>
@@ -28,6 +29,10 @@ export type Action = {
   sentenceId: string;
   type: "setObject";
 } | {
+  selection: string;
+  sentenceId: string;
+  type: "setLocation";
+}| {
   startIndex: number;
   endIndex: number;
   sentenceId: string;
@@ -37,14 +42,20 @@ export type Action = {
   sentenceId: string;
   type: "setHoveredPart";
 }
+| {
+  pos: string;
+  sentenceId: string;
+  type: "addRequiredPart";
+}
 
 const reducer = (
   state: State = {sentenceMap: {
-    "desuExample": { verb: "desu", id: "desuExample", requiredParts: ["topic", "noun", "verb"]},
-    "desu": { verb: "desu", id: "desu", requiredParts: ["topic", "noun", "verb"]},
-    "eatDrink": { id: "eatDrink", requiredParts: ["topic", "object", "verb"]},
-    "eatDrinkReorder": { id: "eatDrinkReorder", verb: "tabemasu", object: "gohan", topic: "neko", requiredParts: ["topic", "object", "verb"]},
-    "desuFormality": { verb: "desu", id: "desuFormality", topic: "watashi", noun: "Duo", requiredParts: ["topic", "noun", "verb"]},
+    "desuExample": { supportedParts: [], verb: "desu", id: "desuExample", requiredParts: ["topic", "noun", "verb"]},
+    "desu": { supportedParts: [], verb: "desu", id: "desu", requiredParts: ["topic", "noun", "verb"]},
+    "desuFormality": { supportedParts: [], verb: "desu", id: "desuFormality", topic: "watashi", noun: "Duo", requiredParts: ["topic", "noun", "verb"]},
+    "eatDrink": { supportedParts: [], id: "eatDrink", requiredParts: ["topic", "object", "verb"]},
+    "eatDrinkReorder": { supportedParts: [], id: "eatDrinkReorder", verb: "tabemasu", object: "gohan", topic: "neko", requiredParts: ["topic", "object", "verb"]},
+    "moreParticles": { supportedParts: ["location"], verb: "nomimasu", id: "moreParticles", topic: "Duo", object: "gohan", requiredParts: ["topic", "object", "verb"]},
     }},
   action: Action
 ): State => produce(state, (draft: State) => {
@@ -65,6 +76,9 @@ const reducer = (
     case "setVerb":
       sentence.verb = action.selection;
       break;
+    case "setLocation":
+      sentence.location = action.selection;
+      break;
     case "reorderParts":
       const part = sentence.requiredParts[action.startIndex];
       sentence.requiredParts[action.startIndex] = sentence.requiredParts[action.endIndex];
@@ -72,6 +86,9 @@ const reducer = (
       break;
     case "setHoveredPart":
       sentence.hoveredPart = action.part;
+      break;
+    case "addRequiredPart":
+      sentence.requiredParts = [...sentence.requiredParts.slice(0, sentence.requiredParts.length - 1), action.pos, sentence.requiredParts[sentence.requiredParts.length - 1]];
       break;
   }
   return draft;
