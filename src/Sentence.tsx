@@ -89,6 +89,11 @@ export const Sentence = (
     </span>
   </div>;
 
+  // @ts-ignore
+  const isFullSentence = sentence.requiredParts.every(part => sentence[part]);
+
+  const translationDisplay = isFullSentence && <TranslationDisplay sentenceId={sentenceId}/>
+
 
   return <div className="text-xl">
     <DragDropContext onDragEnd={onDragEnd}>
@@ -102,7 +107,52 @@ export const Sentence = (
       {errorSentence}
     </DragDropContext>
     {/*。*/}
+    {translationDisplay}
   </div>
+};
+
+const TranslationDisplay = ({
+  sentenceId
+}: {
+  sentenceId: string
+}) => {
+  const sentence = useSelector((state: State) => state.sentenceMap[sentenceId]);
+  const dispatch = useDispatch();
+
+  const getTranslation =(text: string, sentence: SentenceInfo): string => {
+    const translationMap: Record<string, string> = {
+      "desu": "is ",
+      "da": "is ",
+      "Duo": "Duo ",
+      "Misu": "Misu ",
+      "neko": "a cat ",
+      "fukurō": "an owl ",
+      "ocha": "tea ",
+      "tabemasu": "eats ",
+      "nomimasu": "drinks ",
+      "gohan": "rice ",
+      "watashi": "I ",
+    };
+
+    if (text === "desu" || text === "da") {
+      if (sentence.topic === 'watashi') {
+        return "am "
+      }
+    }
+
+    return translationMap[text ?? ""] ?? "";
+  };
+
+  console.log (sentence.topic);
+
+  const parts = [sentence.topic, sentence.verb, sentence.noun, sentence.object].map(part =>
+    part ? getTranslation(part, sentence) : ""
+  );
+
+  return <div className="w-full flex flex-row justify-center text-sm text-gray-600 mt-3 space-x-3">
+    {parts}
+  </div>
+
 };
 
 const Dropdown = ({
