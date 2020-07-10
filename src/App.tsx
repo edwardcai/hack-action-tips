@@ -139,8 +139,8 @@ function App() {
               {text: "ocha", translation: "tea"},
             ],
             topic: [
-              {text: "fukurō", translation: "owl"},
-              {text: "neko", translation: "cat"},
+              {text: "Duo", translation: "Duo"},
+              {text: "Misu", translation: "misu"},
             ],
             verb: [
               {text: "tabemasu", translation: "eat"},
