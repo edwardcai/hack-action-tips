@@ -104,10 +104,10 @@ export const Sentence = (
           </div>
         )}
       </Droppable>
-      {errorSentence}
     </DragDropContext>
     {/*。*/}
     {translationDisplay}
+    {errorSentence}
   </div>
 };
 
@@ -145,9 +145,17 @@ const TranslationDisplay = ({
 
   console.log (sentence.topic);
 
-  const parts = [sentence.topic, sentence.verb, sentence.noun, sentence.object].map(part =>
-    part ? getTranslation(part, sentence) : ""
-  );
+  const parts = ["topic", "verb", "object", "noun"].map(pos => {
+    // @ts-ignore
+    const part = sentence[pos];
+    const partTranslation = part ? getTranslation(part, sentence) : "";
+    if (!partTranslation) {
+      return null;
+    }
+    return <div className={pos === sentence.hoveredPart ? "bg-yellow-300" : ""}>
+      {partTranslation}
+    </div>
+  });
 
   return <div className="w-full flex flex-row justify-center text-sm text-gray-600 mt-3 space-x-3">
     {parts}
@@ -192,6 +200,16 @@ const Dropdown = ({
   return <div ref={wrapperRef}>
     <div
       className={options.length > 0 ? "hover:bg-yellow-300 cursor-pointer" : ""}
+      onMouseEnter={() => dispatch({
+        sentenceId: sentenceId,
+        part: sentencePart,
+        type: "setHoveredPart",
+      })}
+      onMouseLeave={() => dispatch({
+        sentenceId: sentenceId,
+        part: undefined,
+        type: "setHoveredPart",
+      })}
       onClick={() => setIsShowing(true)}
     > {text} </div>
     {isShowing && <div className="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg">

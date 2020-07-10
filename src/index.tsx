@@ -32,6 +32,10 @@ export type Action = {
   endIndex: number;
   sentenceId: string;
   type: "reorderParts";
+} | {
+  part: string | undefined;
+  sentenceId: string;
+  type: "setHoveredPart";
 }
 
 const reducer = (
@@ -65,6 +69,9 @@ const reducer = (
       const part = sentence.requiredParts[action.startIndex];
       sentence.requiredParts[action.startIndex] = sentence.requiredParts[action.endIndex];
       sentence.requiredParts[action.endIndex] = part;
+      break;
+    case "setHoveredPart":
+      sentence.hoveredPart = action.part;
       break;
   }
   return draft;

@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="w-screen flex flex-col items-center mt-20 mb-64">
       <div
-        className="flex w-6/12 flex-col content-center items-center space-y-6"
+        className="flex w-4/12 flex-col content-center items-center space-y-6"
       >
         <div className={"w-full text-xl font-bold"}>
           Desu
@@ -130,6 +130,7 @@ export interface SentenceInfo {
   noun?: string
   object?: string
   requiredParts: string[]
+  hoveredPart?: string
 }
 
 const OwlPicture = ({
