@@ -32,7 +32,11 @@ export type Action = {
   selection: string;
   sentenceId: string;
   type: "setLocation";
-}| {
+} | {
+  selection: string;
+  sentenceId: string;
+  type: "setTime";
+} | {
   startIndex: number;
   endIndex: number;
   sentenceId: string;
@@ -55,7 +59,7 @@ const reducer = (
     "desuFormality": { supportedParts: [], verb: "desu", id: "desuFormality", topic: "watashi", noun: "Duo", requiredParts: ["topic", "noun", "verb"]},
     "eatDrink": { supportedParts: [], id: "eatDrink", requiredParts: ["topic", "object", "verb"]},
     "eatDrinkReorder": { supportedParts: [], id: "eatDrinkReorder", verb: "tabemasu", object: "gohan", topic: "neko", requiredParts: ["topic", "object", "verb"]},
-    "moreParticles": { supportedParts: ["location"], verb: "nomimasu", id: "moreParticles", topic: "Duo", object: "gohan", requiredParts: ["topic", "object", "verb"]},
+    "moreParticles": { supportedParts: ["location", "time"], verb: "nomimasu", id: "moreParticles", topic: "Duo", object: "gohan", requiredParts: ["topic", "object", "verb"]},
     }},
   action: Action
 ): State => produce(state, (draft: State) => {
@@ -78,6 +82,9 @@ const reducer = (
       break;
     case "setLocation":
       sentence.location = action.selection;
+      break;
+    case "setTime":
+      sentence.time = action.selection;
       break;
     case "reorderParts":
       const part = sentence.requiredParts[action.startIndex];

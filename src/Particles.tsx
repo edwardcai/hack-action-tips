@@ -44,7 +44,8 @@ const ParticleRow = ({
   const posToParticle: Record<string, string> = {
     "object": "o",
     "topic": "wa",
-    "location": "de"
+    "location": "de",
+    "time": "ni"
   };
 
   const particle = posToParticle[pos];
@@ -55,7 +56,7 @@ const ParticleRow = ({
   // @ts-ignore
   const currValue = sentence[pos] ?? "...";
   const currValueDisplay = sentence.requiredParts.includes(pos)
-    ? <span> {currValue} </span>
+    ? <span> {currValue} <span className={"font-bold"}>{" " + particle}</span> </span>
     : <button
       className={"bg-blue-500 hover:bg-blue-700 text-white text-base font-bold px-2 rounded"}
       onClick={() => dispatch({
@@ -97,6 +98,12 @@ const ParticleRow = ({
   };
   const location = locationMap[sentence.location ?? ""];
 
+    const timeMap: Record<string, string> = {
+    "1月": "January",
+    "8月": "August",
+  };
+  const time = timeMap[sentence.time ?? ""];
+
   const getExplanation = (): string => {
     if (pos === "topic") {
       return `What is doing the action of ${action}? ${topic} is!`
@@ -109,6 +116,11 @@ const ParticleRow = ({
     if (pos === "location") {
       return `Where is ${topic} ${action}? In ${location}!`
     }
+
+    if (pos === "time") {
+      return `When is ${topic} ${action}? In ${time}!`
+    }
+
     return ""
   };
 

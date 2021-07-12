@@ -18,13 +18,15 @@ export const Sentence = (
       verb: "text-green-600",
       topic: "text-orange-600",
       object: "text-blue-600",
-      location: "text-red-600"
+      location: "text-red-600",
+      time: "text-yellow-600",
     };
 
     const posParticle: Record<string, string> = {
       topic: "wa",
       object: "o",
       location: "de",
+      time: "ni",
     };
 
     const editable = <Dropdown
@@ -138,6 +140,8 @@ const TranslationDisplay = ({
       "watashi": "I ",
       "Ejiputo": "in Egypt",
       "Furansu": "in France",
+      "1月": "In January,",
+      "8月": "In August,",
     };
 
     if (text === "desu" || text === "da") {
@@ -151,7 +155,7 @@ const TranslationDisplay = ({
 
   console.log (sentence.topic);
 
-  const parts = ["topic", "verb", "object", "noun", "location"].map(pos => {
+  const parts = ["time", "topic", "verb", "object", "noun", "location"].map(pos => {
     // @ts-ignore
     const part = sentence[pos];
     const partTranslation = part ? getTranslation(part, sentence) : "";

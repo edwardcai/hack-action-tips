@@ -149,6 +149,10 @@ function App() {
             location: [
               {text: "Furansu", translation: "France"},
               {text: "Ejiputo", translation: "Egypt"},
+            ],
+            time: [
+              {text: "1月", translation: "January"},
+              {text: "8月", translation: "August"},
             ]
           }}
         />
@@ -167,6 +171,7 @@ export interface SentenceInfo {
   noun?: string
   object?: string
   location?: string
+  time?: string
   requiredParts: string[],
   supportedParts: string[],
   hoveredPart?: string
